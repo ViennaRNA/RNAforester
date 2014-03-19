@@ -55,7 +55,7 @@ AC_ARG_WITH([xmlplusplus-lib],
 	    [])
 
 save_CPPFLAGS=$CPPFLAGS	
-CPPFLAGS=["-Ig2-0.70/src/ ${CPPFLAGS}"]
+CPPFLAGS=["-Ig2-0.72/src/ ${CPPFLAGS}"]
 
 dnl AC_CHECK_LIB(gd,main,,)
 		  
@@ -69,8 +69,8 @@ AC_C_CONST
 AC_C_INLINE
 AC_TYPE_SIZE_T
 
-CPPFLAGS="$save_CPPFLAGS -I../g2-0.70/include/ "
-LDFLAGS=["-L../g2-0.70 ${LDFLAGS}"]
+CPPFLAGS="$save_CPPFLAGS -I../g2-0.72/include/ "
+LDFLAGS=["-L../g2-0.72 ${LDFLAGS}"]
 
 if ${HAVE_LIBG2}; then
   LIBS=["-lg2 ${LIBS}"]
@@ -83,7 +83,7 @@ AC_SUBST(LDFLAGS)
 
 dnl Checks for library functions.
 
-AC_CONFIG_SUBDIRS(g2-0.70)
+AC_CONFIG_SUBDIRS(g2-0.72)
 AC_OUTPUT(Makefile src/Makefile man/Makefile)
 
 

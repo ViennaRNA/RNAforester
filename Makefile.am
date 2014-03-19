@@ -1,2 +1,2 @@
-SUBDIRS =  g2-0.70 src man
+SUBDIRS =  g2-0.72 src man
 

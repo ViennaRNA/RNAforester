@@ -1,0 +1,16 @@
+Makefile.in
+aclocal.m4
+autom4te.cache
+config.*
+configure
+depcomp
+g2-0.72/autom4te.cache
+install-sh
+man/Makefile.in
+missing
+src/Makefile.in
+Makefile
+man/Makefile
+src/.deps/
+src/Makefile
+stamp-h1
