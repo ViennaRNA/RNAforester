@@ -136,6 +136,9 @@ clean:
 	-rm -f a.out
 	-rm -fr doc/html/ doc/latex/ doc/g2_refman.ps doc/g2_refman.pdf
 
+maintainer-clean:	clean
+
+
 demo:	libg2.a
 	(cd ./demo ; make)
 
