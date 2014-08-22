@@ -79,7 +79,7 @@ INS =  $(BASE_INS) $(PS_INS) $(FIG_INS) $(X11_INS) $(WIN32_INS) $(GD_INS)
 # major rule
 #
 .c.o:  
-	$(CC) $(CFLAGS) -c $< -o $@
+	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
 
 
 all: libg2.a
@@ -101,13 +101,24 @@ libg2.so: libg2.@LD_SHARED_EXT@
 	ln -f -s libg2.@LD_SHARED_EXT@ $@
 
 install: libg2.a
-	test -d $(LIBDIR) || mkdir -p $(LIBDIR)
-	test -d $(INCDIR) || mkdir -p $(INCDIR)
-	$(INSTALL_DATA) libg2.a $(LIBDIR)
+	test -d $(DESTDIR)/$(LIBDIR) || mkdir -p $(DESTDIR)/$(LIBDIR)
+	test -d $(DESTDIR)/$(INCDIR) || mkdir -p $(DESTDIR)/$(INCDIR)
+	$(INSTALL_DATA) libg2.a $(DESTDIR)/$(LIBDIR)
 	for IFILE in $(INS); do \
-		$(INSTALL_DATA) $$IFILE  $(INCDIR); \
+		$(INSTALL_DATA) $$IFILE  $(DESTDIR)/$(INCDIR); \
 	done
 
+uninstall:  uninstall-libg2 uninstall-inc
+
+uninstall-libg2:
+	test -n $(DESTDIR)/$(LIBDIR)/libg2.a || exit 0; \
+	rm -f $(DESTDIR)/$(LIBDIR)/libg2.a
+
+uninstall-inc:
+	test -d $(DESTDIR)/$(INCDIR) || exit 0; \
+	for IFILE in $(INS); do \
+		rm -f $(DESTDIR)/$(INCDIR)/`printf "%s" $$IFILE | sed 's/.*\///'`; \
+	done
 release: clean doc
 	cp ./doc/latex/refman.ps  ./doc/g2_refman.ps
 	cp ./doc/latex/refman.pdf ./doc/g2_refman.pdf
@@ -119,13 +130,13 @@ doc:
 
 
 clean:
-	-(cd ./demo ; make clean)
+	-(cd ./demo ; $(MAKE) clean)
 	-(cd ./g2_python ; make clean)
 	-rm -f $(OBJ)
 	-rm -f libg2.a config.cache config.log Makefile.bak config.status
 	-rm -f ./include/*.h
 	-$(FIND) . -name "*~" -exec rm -f {} \;
-	-(cd ./g2_perl ; make clean)
+	-(cd ./g2_perl ; $(MAKE) clean)
 	-rm -f ./g2_perl/test.ps
 	-rm -f ./g2_perl/test.png
 	-rm -f ./g2_perl/test.jpg
@@ -136,6 +147,8 @@ clean:
 	-rm -f a.out
 	-rm -fr doc/html/ doc/latex/ doc/g2_refman.ps doc/g2_refman.pdf
 
+distclean:  clean
+
 maintainer-clean:	clean
 
 
@@ -143,10 +156,14 @@ demo:	libg2.a
 	(cd ./demo ; make)
 
 depend:
-	$(MAKEDEPEND) -- $(CFLAGS) -- $(SRC)
+	$(MAKEDEPEND) -- $(CFLAGS) $(INCLUDES) -- $(SRC)
 	@echo
 	@echo "Run 'make' to build g2 library."
 	@echo
+distdir: clean
+	cp -r * $(distdir)
+
+check:
 
 
 # DO NOT DELETE THIS LINE -- make  depend  depends  on it.
