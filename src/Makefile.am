@@ -17,7 +17,7 @@ AM_CXXFLAGS = -Wall #-fmudflap -funwind-tables
 #AM_LDFLAGS = -lmudflap
 
 
-BUILT_SOURCES = anchors/shape.hpp
+BUILT_SOURCES = anchors/shape.hpp anchors/shape.cpp
 AM_YFLAGS = -d
 RNAforester_SOURCES = \
 	anchors/bplex.lpp \
@@ -55,9 +55,6 @@ RNAforester_SOURCES = \
 	frontend/Arguments.cpp\
 	frontend/rnaforester_options.h\
 	frontend/rnaforester_options.cpp\
-	RNAlib/fold.h\
-	RNAlib/fold_vars.h\
-	RNAlib/part_func.h\
 	TED/forestsz.h\
 	TED/treeedit.h\
 	TED/rnaforestsz.h\
@@ -84,5 +81,10 @@ EXTRA_DIST = \
 	wmatch/pointer.c\
 	wmatch/readgraph.c\
 	wmatch/term.c\
-	wmatch/unpairs.c
+	wmatch/unpairs.c \
+	anchors/bplex.cpp \
+	anchors/shape.cpp \
+	anchors/shape.hpp
 
+noinst_HEADERS  = \
+	anchors/shape.hpp

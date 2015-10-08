@@ -22,14 +22,15 @@
 #include "matrix.h"
 #include "rna_profile_alignment.h"
 #include "rnafuncs.h"
-#include "utils.h"
 
 #ifdef HAVE_LIBRNA
-#include "part_func.h"
-#include "fold_vars.h"
 
 extern "C" {
-#include "fold.h"
+#include "ViennaRNA/fold_vars.h"
+#include "ViennaRNA/utils.h"
+#include "ViennaRNA/naview.h"
+#include "ViennaRNA/fold.h"
+#include "ViennaRNA/part_func.h"
 }
 
 #endif

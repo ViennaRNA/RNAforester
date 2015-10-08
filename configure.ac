@@ -25,17 +25,12 @@ AC_ARG_WITH(ViennaRNA-lib,
   [--with-ViennaRNA-lib        where to search for libRNA.a],
   [LIBS=["$withval/libRNA.a ${LIBS}"] && AC_DEFINE(HAVE_LIBRNA,1,Define to 1 if you have the `RNA' library (-lRNA).)
   LDFLAGS="-L$withval -R$withval ${LDFLAGS}"],
-  LDFLAGS="-L../../lib -L../../ViennaRNA ${LDFLAGS} ${OPENMP_CXXFLAGS}" 
-  if test -r "../lib/fold.c"; then
+  LDFLAGS="-L../../ViennaRNA ${LDFLAGS} ${OPENMP_CXXFLAGS}" 
+  if test -r "../ViennaRNA/fold.c"; then
     AC_DEFINE(HAVE_LIBRNA)
     LIBS=["-lRNA ${LIBS}"]
-    AC_MSG_RESULT([using (to be built) libRNA.a in ../lib])
-  else
-    if test -r "../ViennaRNA/fold.c"; then
-      AC_DEFINE(HAVE_LIBRNA)
-      LIBS=["-lRNA ${LIBS}"]
-      AC_MSG_RESULT([using (to be built) libRNA.a in ../ViennaRNA])
-    fi
+    CPPFLAGS=["-I../../ ${CPPFLAGS}"]
+    AC_MSG_RESULT([using (to be built) libRNA.a in ../ViennaRNA])
   fi
  ) 
 dnl AC_CHECK_LIB(RNA, fold,,AC_MSG_WARN(Vienna RNA library libRNA.a was not found. RNAforester will be compiled without the structure prediction option -p and graphical output))
