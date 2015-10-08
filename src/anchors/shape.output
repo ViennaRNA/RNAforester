@@ -1,0 +1,100 @@
+Grammar
+
+    0 $accept: axiom $end
+
+    1 axiom: pairs
+
+    2 pairs: pairs pair
+    3      | %empty
+
+    4 pair: LBRACE pairs RBRACE
+
+
+Terminals, with rules where they appear
+
+$end (0) 0
+error (256)
+LBRACE (258) 4
+RBRACE (259) 4
+
+
+Nonterminals, with rules where they appear
+
+$accept (5)
+    on left: 0
+axiom (6)
+    on left: 1, on right: 0
+pairs (7)
+    on left: 2 3, on right: 1 2 4
+pair (8)
+    on left: 4, on right: 2
+
+
+State 0
+
+    0 $accept: . axiom $end
+
+    $default  reduce using rule 3 (pairs)
+
+    axiom  go to state 1
+    pairs  go to state 2
+
+
+State 1
+
+    0 $accept: axiom . $end
+
+    $end  shift, and go to state 3
+
+
+State 2
+
+    1 axiom: pairs .
+    2 pairs: pairs . pair
+
+    LBRACE  shift, and go to state 4
+
+    $default  reduce using rule 1 (axiom)
+
+    pair  go to state 5
+
+
+State 3
+
+    0 $accept: axiom $end .
+
+    $default  accept
+
+
+State 4
+
+    4 pair: LBRACE . pairs RBRACE
+
+    $default  reduce using rule 3 (pairs)
+
+    pairs  go to state 6
+
+
+State 5
+
+    2 pairs: pairs pair .
+
+    $default  reduce using rule 2 (pairs)
+
+
+State 6
+
+    2 pairs: pairs . pair
+    4 pair: LBRACE pairs . RBRACE
+
+    LBRACE  shift, and go to state 4
+    RBRACE  shift, and go to state 7
+
+    pair  go to state 5
+
+
+State 7
+
+    4 pair: LBRACE pairs RBRACE .
+
+    $default  reduce using rule 4 (pair)

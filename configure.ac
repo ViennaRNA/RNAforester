@@ -1,6 +1,6 @@
 dnl Process this file with autoconf to produce a configure script.
 AC_REVISION($Revision: 1.13 $)
-AC_INIT(RNAforester,1.5,mhoechsm@techfak.uni-bielefeld.de,RNAforester)
+AC_INIT(RNAforester,2.0,sschirme@techfak.uni-bielefeld.de,RNAforester)
 AC_PREREQ([2.59])
 
 AM_SILENT_RULES([yes])
@@ -13,6 +13,8 @@ dnl Checks for programs.
 AC_PROG_CXX
 AC_PROG_CC
 AC_LANG(C++)
+AM_PROG_LEX
+AC_PROG_YACC
 
 dnl Checks for libraries.
 dnl AC_CHECK_LIB(g2,g2_open_vd,,AC_MSG_WARN(Compiling without support for graphical output. Install the g2 library that comes with the RNAforester distribution or download the latest version at http://g2.sourceforge.net/))

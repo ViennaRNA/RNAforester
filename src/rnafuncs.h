@@ -1,11 +1,8 @@
 #ifndef _RNA_FUNCS_H
 #define _RNA_FUNCS_H
 
-#include <deque>
-#include <list>
+#include <vector>
 #include <string>
-
-#include "types.h"
 #include "rnaforester_options.h"
 #include "rna_profile_alignment.h"
 
@@ -15,50 +12,51 @@
 #endif
 #endif
 
-using namespace std;
-	
-class RNAFuncs
-{
- public:
-  struct SquigglePlotOptions
-  {
-	  bool hideBaseNumbers;
-	  Uint baseNumInterval;
-	  bool greyColors;
-	  bool generatePNG;
-	  bool generateJPG;
-          bool generateFIG;
-	  double scale;
-  };
 
-  typedef struct AddXmlInfos {
-    map<int,string> idmapping;
-    map<int,string> comments;
-    map<int,string> descriptions;
-    map<int,string> names;
-    map<int,string> synonyms;
-    Uint xbasepos,ybasepos;
-    bool xmlInput;
-  };
 
-  static bool isRNAString(const string &str);
-  static bool isViennaString(const string &str, Ulong &basePairCount, Ulong &maxDepth);
-  static void drawRNAStructure(const string &seq, const string &structure, const string &filename_prefix, const string &structname, const list<pair<Uint,Uint> > &regions, const SquigglePlotOptions &options);
-  static void drawRNAAlignment(const string &structure, const string &altStructure,  const string &seq1, const string &seq2, const string &strname1, const string &strname2, const string &filename_prefix, const bool atX, const SquigglePlotOptions &options);
-  static void generateRNAAlignmentXML(const string &structure, const string &altStructure, const string &seq1, const string &seq2, const string &strname1, const string &strname2, ostream &s);
-  static void printAli(const string &name1, const string &id2, const string &seq1, const string &seq2, const string &str1, const string &str3);
-  
-  static Uint treeSize(const string &viennaStr);
-	
+class RNAFuncs {
+public:
+    struct SquigglePlotOptions {
+        bool hideBaseNumbers;
+        unsigned int baseNumInterval;
+        bool greyColors;
+        bool generatePNG;
+        bool generateJPG;
+        bool generateFIG;
+        double scale;
+    };
+
+    struct AddXmlInfos {
+        std::map<int,std::string> idmapping;
+        std::map<int,std::string> comments;
+        std::map<int,std::string> descriptions;
+        std::map<int,std::string> names;
+        std::map<int,std::string> synonyms;
+        unsigned int xbasepos,ybasepos;
+        bool xmlInput;
+    };
+
+    static bool isRNAString(const std::string &str);
+    static bool isViennaString(const std::string &str, unsigned long &basePairCount, unsigned long &maxDepth);
+		static bool isViennaString(const std::string &string, unsigned long &length, unsigned long &basePairCount, unsigned long &maxDepth);
+		static bool isAnchoredViennaString(const std::string &string, unsigned long &length, unsigned long &basePairCount, unsigned long &maxDepth);
+
+    static void drawRNAStructure(const std::string &seq, const std::string &structure, const std::string &filename_prefix, const std::string &structname, const std::vector<std::pair<unsigned int,unsigned int> > &regions, const SquigglePlotOptions &options);
+    static void drawRNAAlignment(const std::string &structure, const std::string &altStructure,  const std::string &seq1, const std::string &seq2, const std::string &strname1, const std::string &strname2, const std::string &filename_prefix, const bool atX, const SquigglePlotOptions &options);
+    static void generateRNAAlignmentXML(const std::string &structure, const std::string &altStructure, const std::string &seq1, const std::string &seq2, const std::string &strname1, const std::string &strname2, std::ostream &s);
+    static void printAli(const std::string &name1, const std::string &id2, const std::string &seq1, const std::string &seq2, const std::string &str1, const std::string &str3);
+
+    static unsigned int treeSize(const std::string &viennaStr, bool anchored);
+
 #ifdef HAVE_LIBXMLPLUSPLUS
 #ifdef HAVE_LIBXML2
-	static string getXSDURL();
-	static void printMAliXML(deque<pair<double,RNAProfileAlignment*> > &resultList, const RNAforesterOptions &options,double &minPairProb,AddXmlInfos &xmlInfos,const string &outputFile);
-	static void printPAliXML(const string &id1, const string &name2, const string &seq1, const string &seq2, const string &str1, const string &str3, double &score, const RNAforesterOptions &options,AddXmlInfos &xmlInfos,const string &outputFile);
-	static void printMapping(map<int,string> &mapping);
-#endif	
+    static std::string getXSDURL();
+    static void printMAliXML(std::vector<std::pair<double,RNAProfileAlignment*> > &resultList, const Options &options,double &minPairProb,AddXmlInfos &xmlInfos,const std::string &outputFile);
+    static void printPAliXML(const std::string &id1, const std::string &name2, const std::string &seq1, const std::string &seq2, const std::string &str1, const std::string &str3, double &score, const Options &options,AddXmlInfos &xmlInfos,const std::string &outputFile);
+    static void printMapping(std::map<int,std::string> &mapping);
 #endif
-	static string UpperCase(const string &str);
+#endif
+    static std::string UpperCase(const std::string &str);
 };
 
 #endif

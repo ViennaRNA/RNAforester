@@ -1,89 +1,113 @@
 #include "rna_algebra.h"
 
-Score::Score(RNAforesterOptions &options)
-{
-  m_isLocal=options.has(RNAforesterOptions::LocalSimilarity);
-  m_isRIBOSUM=options.has(RNAforesterOptions::RIBOSUMScore);
+Score::Score(Options &options) 
+	: isAffine_(options.has(Options::Affine)),
+		isLocal_(options.has(Options::LocalSimilarity)),
+		isDistance_(options.has(Options::CalculateDistance)),
+		isRIBOSUM_(options.has(Options::RIBOSUMScore)),
+    bp_rep_score_(0),
+    bp_indel_score_(0),
+    bp_indel_open_score_(0),
+    b_match_score_(0),
+    b_rep_score_(0),
+    b_indel_score_(0),
+    b_indel_open_score_(0) {
 
-  // distance or similarity ?
-  if(options.has(RNAforesterOptions::CalculateDistance))
-    {
-      m_isDistance=true;
-      m_bp_rep_score = 0;
-      m_bp_del_score = 3;
-      m_b_match_score = 0;
-      m_b_rep_score =1;
-      m_b_del_score =2;      
-    }
-  else
-    {
-      m_isDistance=false;
 
-	  if(options.has(RNAforesterOptions::RIBOSUMScore))
-	  {
-		  m_bp_del_score=-100;
-		  m_b_del_score=-200;
-	  }
-	  else
-	  {
-		m_bp_rep_score = 10;
-		m_bp_del_score =-5;
-		m_b_match_score = 1;
-		m_b_rep_score = 0;
-                m_b_del_score =-10;
-	  }
+
+    // distance or similarity ?
+    if (isDistance_) {
+        bp_rep_score_  = 0;
+        bp_indel_score_ = 3;
+        b_match_score_ = 0;
+        b_rep_score_   = 1;
+        b_indel_score_ = 2;
+				if (isAffine_) {
+					bp_indel_open_score_ = 3; // TODO compl. arbitrary!
+					b_indel_open_score_ = 2; // TODO compl. arbitrary!;
+				}
+    } 
+		else {
+        if (isRIBOSUM_) {
+            bp_indel_score_ =-100;
+            b_indel_score_  =-200;
+        } 
+				else {
+            bp_rep_score_  = 10;
+            bp_indel_score_ =-5;
+            b_match_score_ = 1;
+            b_rep_score_   = 0;
+            b_indel_score_ =-10;
+						if (isAffine_) {
+							bp_indel_open_score_ = -5; // TODO compl. arbitrary!
+							b_indel_open_score_ = -10; // TODO compl. arbitrary!;
+						}
+        }
     }
-  
-  // read scores
-  options.get(RNAforesterOptions::BpRepScore,m_bp_rep_score,m_bp_rep_score);
-  options.get(RNAforesterOptions::BpDelScore,m_bp_del_score,m_bp_del_score);
-  options.get(RNAforesterOptions::BMatchScore,m_b_match_score,m_b_match_score);
-  options.get(RNAforesterOptions::BRepScore,m_b_rep_score,m_b_rep_score);
-  options.get(RNAforesterOptions::BDelScore,m_b_del_score,m_b_del_score);
+
+    // read scores
+    options.get(Options::BpRepScore,bp_rep_score_,bp_rep_score_);
+    options.get(Options::BpDelScore,bp_indel_score_,bp_indel_score_);
+    options.get(Options::BMatchScore,b_match_score_,b_match_score_);
+    options.get(Options::BRepScore,b_rep_score_,b_rep_score_);
+    options.get(Options::BDelScore,b_indel_score_,b_indel_score_);
+		if (isAffine_) {
+			options.get(Options::BpDelOpenScore,bp_indel_open_score_,bp_indel_open_score_);
+			options.get(Options::BDelOpenScore,b_indel_open_score_,b_indel_open_score_);
+		}
 }
 
-Score::Score(const Score &s)
-{
-  // copy scores
-  m_isDistance = s.m_isDistance;
-  m_isLocal = s.m_isLocal;
-  m_bp_rep_score = s.m_bp_rep_score;
-  m_bp_del_score = s.m_bp_del_score;
-  m_b_match_score = s.m_b_match_score;
-  m_b_rep_score = s.m_b_rep_score;
-  m_b_del_score = s.m_b_del_score;   
+Score::Score(const Score &s) {
+    // copy scores
+		isAffine_ = s.isAffine_;
+		isLocal_ = s.isLocal_;
+    isDistance_ = s.isDistance_;
+    isRIBOSUM_ = s.isRIBOSUM_;
+    bp_rep_score_ = s.bp_rep_score_;
+    bp_indel_score_ = s.bp_indel_score_;
+    bp_indel_open_score_ = s.bp_indel_open_score_;
+    b_match_score_ = s.b_match_score_;
+    b_rep_score_ = s.b_rep_score_;
+    b_indel_score_ = s.b_indel_score_;
+    b_indel_open_score_ = s.b_indel_open_score_;
 }
 
-void Score::print()
-{
-  // show score parameters
-  cout << "*** Scoring parameters ***" << endl << endl; 
+std::ostream& operator<< (std::ostream &out, const Score &score) {
 
-      cout << "Scoring type: ";
-      if(m_isDistance)
-	cout << "distance" << endl;
-      else
-	{
-	  if(m_isLocal)
-	    cout << "local ";
-	  
-	  cout << "similarity" << endl;	 
-	}
-           
-      cout << "Scoring parameters:" << endl;
+    out << "*** Scoring parameters ***" << std::endl << std::endl;
 
-	  if(m_isRIBOSUM)
-	  {
-		  cout << "RIBOSUM85-60 Scoring matrix" << endl;
-		  cout << "pd:  " << m_bp_del_score << endl;
-		  cout << "bd:  " << m_b_del_score << endl << endl;
-	  }
-	  else
-	  {
-		  cout << "pm:   " << m_bp_rep_score << endl;
-		  cout << "pd:   " << m_bp_del_score << endl;
-		  cout << "bm:   " << m_b_match_score << endl;
-		  cout << "br:   " << m_b_rep_score << endl;
-		  cout << "bd:   " << m_b_del_score << endl << endl;
-	  }
+    out << "Scoring type: ";
+    if (score.isAffine_)
+        out << "affine ";
+    if (score.isDistance_)
+        out << "distance" << std::endl;
+    else {
+        if (score.isLocal_)
+            out << "local ";
+				else
+            out << "global ";
+        out << "similarity" << std::endl;
+    }
+
+    std::cout << "Scoring parameters:" << std::endl;
+    if (score.isRIBOSUM_) {
+        out << "RIBOSUM85-60 Scoring matrix" << std::endl;
+        out << "pair indel:  " << score.bp_indel_score_ << std::endl;
+        out << "base indel:  " << score.b_indel_score_ << std::endl << std::endl;
+    } 
+		else {
+        out << "pair match:       " << score.bp_rep_score_ << std::endl;
+				if (score.isAffine_)
+					out << "pair indel open:  " << score.bp_indel_open_score_ << std::endl;
+        out << "pair indel:       " << score.bp_indel_score_ << std::endl;
+        out << "base match:       " << score.b_match_score_ << std::endl;
+        out << "base replacement: " << score.b_rep_score_ << std::endl;
+        out << "base indel:       " << score.b_indel_score_ << std::endl;
+				if (score.isAffine_)
+					out << "base indel open:	" << score.b_indel_open_score_ << std::endl;
+        out << std::endl;
+    }
+
+
+	return out;
 }
