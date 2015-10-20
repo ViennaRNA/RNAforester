@@ -5,3 +5,5 @@ RNAforester
 anchors/bplex.cpp
 anchors/shape.cpp
 anchors/shape.hpp
+anchors/shape.output
+
