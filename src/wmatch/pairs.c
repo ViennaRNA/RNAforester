@@ -1,9 +1,8 @@
 /* Process an edge linking two linked vertices */
 /* Note: global variable v set to the base of one end of the linking edge */
 
-PAIR (outcome)
-int *outcome;
-
+void
+PAIR(int *outcome)
 {   int u, w, temp;
 
 #ifdef DEBUG
@@ -57,9 +56,8 @@ int *outcome;
 /* 	called with NEXTPAIR[DUMMYEDGE] pointing to the first edge */
 /*		on newbase's pair vector */
 
-MERGE_PAIRS (v)
-int v;
-
+void
+MERGE_PAIRS(int v)
 {
 #ifdef DEBUG
     printf("Merge Pairs v=%d\n",v);
@@ -82,9 +80,8 @@ int v;
 /* Note: global variable newbase is set to the base vertex of the new blossom */
 /*		newlast is set to the last vertex in newbase's current blossom*/
 
-LINK_PATH (e)
-int e;
-
+void
+LINK_PATH (int e)
 {   int u;
 
 #ifdef DEBUG
@@ -116,8 +113,8 @@ int e;
 /*			neighbor set to the vertex at the end of e */
 /*			pairpoint set to the next pair on the pair vector */
 
-INSERT_PAIR ()
-
+void
+INSERT_PAIR (void)
 {   int del_e;
 
 #ifdef DEBUG

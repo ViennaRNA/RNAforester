@@ -1,9 +1,8 @@
 /* Assign a pointer link to a vertex.  Edge e joins a vertex in blossom */
 /* u to a linked vertex. */
 
-POINTER (u,v,e)
-int u,v,e;
-
+void
+POINTER (int u, int v, int e)
 {   int i, del;
 
 #ifdef DEBUG
@@ -41,9 +40,8 @@ int u,v,e;
 
 /* Scan each vertex in the blossom whose base is x */
 
-SCAN (x, del)
-int x, del;
-
+void
+SCAN (int x, int del)
 {   int u, del_e;
 
 #ifdef DEBUG

@@ -1,8 +1,7 @@
 /* Expands a blossom.  Fixes up LINK and MATE. */
 
-UNPAIR (oldbase, oldmate)
-int oldbase, oldmate;
-
+void
+UNPAIR (int oldbase, int oldmate)
 {   int e, newbase, u;
 
 #ifdef DEBUG
@@ -40,9 +39,8 @@ int oldbase, oldmate;
 /* firstmate is the first base vertex on the path */
 /* edge e is the new matched edge for firstmate   */
 
-REMATCH (firstmate, e)
-int firstmate, e;
- 
+void
+REMATCH (int firstmate, int e)
 {
 #ifdef DEBUG
      printf("Rematch firstmate=%d e=%d-%d\n",firstmate, END[OPPEDGE(e)], END[e]);
@@ -67,9 +65,8 @@ int firstmate, e;
 /* unlinks subblossoms in a blossom.  oldbase is the base of the blossom to */
 /* be unlinked. */
 
-UNLINK (oldbase)
-int oldbase;
-
+void
+UNLINK (int oldbase)
 {   int k, j=1;
 
 #ifdef DEBUG

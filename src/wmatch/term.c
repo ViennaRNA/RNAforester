@@ -1,6 +1,7 @@
 /* updates numerical bounds for linking paths. */
 /* called with LAST_D set to the bound on DELTA for the next search */
 
+void
 SET_BOUNDS ()
  
 {   int del;
@@ -32,6 +33,7 @@ SET_BOUNDS ()
 
 /* undoes all blossoms to get the final matching */
 
+void
 UNPAIR_ALL ()
 
 {   int u;

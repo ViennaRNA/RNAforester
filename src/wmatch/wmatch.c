@@ -15,6 +15,18 @@
 #include "graphtypes.h"
 #include "wmatch.h"
 
+void MERGE_PAIRS(int v);
+void LINK_PATH(int e);
+void PAIR(int *outcome);
+void INSERT_PAIR (void);
+
+void UNPAIR(int oldbase, int oldmate);
+void REMATCH (int firstmate, int e);
+void UNLINK (int oldbase);
+
+void POINTER (int u, int v, int e);
+void SCAN (int x, int del);
+
 #include "pairs.c"
 #include "pointer.c"
 #include "readgraph.c"
