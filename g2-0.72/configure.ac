@@ -47,11 +47,30 @@ AC_SUBST(LD_SHARED_EXT)
 AC_PROG_CC
 AC_PROG_CPP
 AC_PROG_CXX
-AC_PROG_RANLIB
 AC_PROG_INSTALL
 AC_CHECK_PROG(FIND, find, find, :)
 AC_CHECK_PROG(MAKEDEPEND, makedepend, makedepend, :)
 AC_CHECK_LIB(dl, dlopen, have_dl=yes, have_dl=no)
+
+#
+# Enable user setting 'ar' command
+#
+if test "x$AR" != "x" ; then
+  AR="$AR"
+else
+  AR=ar
+fi
+AC_SUBST(AR)
+
+#
+# Enable user setting 'ranlib' command
+#
+if test "x$RANLIB" != "x" ; then
+  RANLIB="$RANLIB"
+else
+  AC_PROG_RANLIB
+fi
+
 
 
 #
@@ -115,8 +134,6 @@ AC_SUBST(DO_GIF)
 
 AC_HEADER_STDC
 AC_CHECK_HEADERS(limits.h)
-
-
 
 #
 # finally create makefiles using Makefile.in

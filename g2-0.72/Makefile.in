@@ -27,10 +27,10 @@ INSTALL      = @INSTALL@
 INSTALL_DATA = @INSTALL_DATA@
 FIND         = @FIND@
 MAKEDEPEND   = @MAKEDEPEND@
-AR           = ar
-ARFLAGS      = -cr
+AR           = @AR@
+ARFLAGS      = cr
 RANLIB       = @RANLIB@
-LD           = ld
+LD           = @CC@
 LDFLAGS      = @LDFLAGS@
 
 
