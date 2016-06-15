@@ -21,19 +21,17 @@ dnl AC_CHECK_LIB(g2,g2_open_vd,,AC_MSG_WARN(Compiling without support for graphi
 
 AC_OPENMP
 
-AC_ARG_WITH(ViennaRNA-lib,
-  [--with-ViennaRNA-lib        where to search for libRNA.a],
-  [LIBS=["$withval/libRNA.a ${LIBS}"] && AC_DEFINE(HAVE_LIBRNA,1,Define to 1 if you have the `RNA' library (-lRNA).)
-  LDFLAGS="-L$withval -R$withval ${LDFLAGS}"],
-  LDFLAGS="-L../../ViennaRNA ${LDFLAGS} ${OPENMP_CXXFLAGS}" 
-  if test -r "../ViennaRNA/fold.c"; then
-    AC_DEFINE(HAVE_LIBRNA)
-    LIBS=["-lRNA ${LIBS}"]
-    CPPFLAGS=["-I../../ ${CPPFLAGS}"]
-    AC_MSG_RESULT([using (to be built) libRNA.a in ../ViennaRNA])
-  fi
- ) 
-dnl AC_CHECK_LIB(RNA, fold,,AC_MSG_WARN(Vienna RNA library libRNA.a was not found. RNAforester will be compiled without the structure prediction option -p and graphical output))
+# Search for the RNAlib2 and set variables for Makefiles.
+PKG_CHECK_MODULES([VRNA], [RNAlib2],
+                  [
+                    AC_DEFINE([HAVE_LIBRNA], [], [Link against RNAlib])
+                    LIBS=["${VRNA_LIBS} ${LIBS}"]
+                    CPPFLAGS=["${VRNA_CFLAGS}  ${CPPFLAGS}"]
+                    AC_SUBST([VRNA_CFLAGS])
+                    AC_SUBST([VRNA_LIBS])
+                  ],
+                  [])
+
 
 AC_ARG_WITH([xml2-lib],
             [AS_HELP_STRING([--with-xml2-lib],[where to search for libxml2.so])],
