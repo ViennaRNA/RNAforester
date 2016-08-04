@@ -25,8 +25,9 @@ AC_OPENMP
 PKG_CHECK_MODULES([VRNA], [RNAlib2],
                   [
                     AC_DEFINE([HAVE_LIBRNA], [], [Link against RNAlib])
-                    LIBS=["${VRNA_LIBS} ${LIBS}"]
                     CPPFLAGS=["${VRNA_CFLAGS}  ${CPPFLAGS}"]
+                    CFLAGS=["${VRNA_CFLAGS}  ${CFLAGS}"]
+                    LIBS=["${VRNA_LIBS} ${LIBS}"]
                     AC_SUBST([VRNA_CFLAGS])
                     AC_SUBST([VRNA_LIBS])
                   ],
